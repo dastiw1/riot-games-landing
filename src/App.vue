@@ -1,32 +1,78 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="main-container">
+      <MainHeader />
+      <router-view />
     </div>
-    <router-view />
   </div>
 </template>
 
+<script>
+import MainHeader from "@/modules/global/components/MainHeader.vue";
+
+import { defineComponent } from "@vue/composition-api";
+
+export default defineComponent({
+  components: { MainHeader },
+  setup() {
+    //
+  },
+});
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import "./styles/global";
+
+// Chrome Reset
+a:focus {
+  outline: none;
 }
 
-#nav {
-  padding: 30px;
+.logo,
+.logo a {
+  color: $white;
+  font-weight: normal;
+  background-color: inherit;
+}
 
+.top-bar,
+.top-bar ul {
+  background-color: #41b883;
+}
+
+li a.menu-button {
+  border-radius: 20px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  float: right;
+}
+
+.content-wrapper {
+  padding: 0.75rem 0;
+}
+
+.sidebar-menu {
+  @include menu-base();
+  @include menu-direction(vertical);
   a {
-    font-weight: bold;
-    color: #2c3e50;
+    color: $secondary-color;
+    font-weight: normal;
+  }
+  a.active {
+    font-weight: 600;
+    color: $primary-color;
+  }
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+.main-container {
+  //
+}
+@media screen and (min-width: 768px) {
+  .main-container {
+    min-width: 1440px;
   }
 }
 </style>

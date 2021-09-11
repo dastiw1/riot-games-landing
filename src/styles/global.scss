@@ -1,0 +1,12 @@
+// Source Sans Pro font
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600');
+// Init Foundation
+@include foundation-everything(true); 
+
+// @include foundation-grid;
+@include foundation-flex-classes;
+@include foundation-flex-grid;
+
+
+// Import Motion UI
+@import '~motion-ui/dist/motion-ui';
