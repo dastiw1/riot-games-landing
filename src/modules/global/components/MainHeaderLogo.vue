@@ -8,7 +8,11 @@
       />
     </div>
     <div class="main-header-logo__divider"></div>
-    <div class="main-header-logo">
+    <div
+      class="
+        main-header-logo__img-wrapper main-header-logo__img-wrapper_secondary
+      "
+    >
       <img
         class="main-header-logo-img"
         :src="require('@/assets/img/logo.png')"
@@ -26,6 +30,12 @@
     width: 2px;
     background-color: #fff;
     margin: 0 60px;
+  }
+
+  &__img-wrapper {
+    &_secondary {
+      margin-right: 40px;
+    }
   }
 }
 </style>

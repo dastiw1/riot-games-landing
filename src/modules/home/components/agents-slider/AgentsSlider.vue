@@ -15,28 +15,31 @@
       </svg>
     </div>
     <div class="agents-slider__slider" id="agents">
-      <ul class="orbit-container">
-        <li class="is-active orbit-slide">
+      <ul
+        v-if="slidesToShowType === 'small'"
+        class="orbit-container show-for-small-only"
+      >
+        <li
+          v-for="(agent, i) in agents"
+          :key="'mobile_' + agent.id"
+          class="orbit-slide"
+          :class="{ 'is-active': i === 0 }"
+        >
           <div class="agents-slider__slide">
-            <AgentCard
-              class="agents-slider__card"
-              v-for="agent in agents"
-              :key="agent.id"
-              :agent="agent"
-            />
+            <AgentCard class="agents-slider__card" :agent="agent" />
           </div>
         </li>
-        <li class="is-active orbit-slide">
-          <div class="agents-slider__slide">
-            <AgentCard
-              class="agents-slider__card"
-              v-for="agent in agents"
-              :key="agent.id"
-              :agent="agent"
-            />
-          </div>
-        </li>
-        <li class="is-active orbit-slide">
+      </ul>
+      <ul
+        v-if="slidesToShowType !== 'small'"
+        class="orbit-container show-for-medium"
+      >
+        <li
+          v-for="i in 3"
+          :key="i"
+          class="orbit-slide"
+          :class="{ 'is-active': i === 0 }"
+        >
           <div class="agents-slider__slide">
             <AgentCard
               class="agents-slider__card"
@@ -70,6 +73,9 @@ export default defineComponent({
   components: { AgentCard },
   setup(_, { emit }) {
     const orbit = ref();
+
+    const slidesToShowType = ref<"small" | "medium">("small");
+
     const model = reactive<{
       agents: any[];
       titleStyles: Record<string, string | number>;
@@ -84,15 +90,22 @@ export default defineComponent({
       const height = orbit.value.$element.height() - 30;
 
       model.titleStyles.height = `${height}px`;
+      setSlidesToShowType();
     }
 
-    window.addEventListener("resize", onResizeHandler);
-
+    function setSlidesToShowType(initial = false) {
+      slidesToShowType.value = Foundation.MediaQuery.current;
+      if (!initial) {
+        orbit.value._reset();
+      }
+    }
     onBeforeMount(async () => {
+      window.addEventListener("resize", onResizeHandler);
       model.agents = await AgentsApi.fetchAgents();
     });
 
     onMounted(() => {
+      setSlidesToShowType(true);
       orbit.value = new Foundation.Orbit($("#agents"), {
         // These options can be declarative using the data attributes
         timerDelay: 5000,
@@ -105,9 +118,11 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       window.removeEventListener("resize", onResizeHandler);
+      orbit.value._destroy();
     });
 
     return {
+      slidesToShowType,
       ...toRefs(model),
     };
   },
@@ -122,7 +137,6 @@ export default defineComponent({
   position: relative;
   display: flex;
   margin: 30px 24px;
-
   z-index: 1;
   &::before {
     display: block;
@@ -135,10 +149,11 @@ export default defineComponent({
     height: 100%;
   }
   &__title {
+    display: flex;
+    justify-content: center;
     width: 20%;
     max-height: 810px;
     padding-top: 28px;
-    padding-left: 50px;
     z-index: 2;
 
     svg {
@@ -160,6 +175,30 @@ export default defineComponent({
     width: 20%;
     padding-left: 20px;
     padding-top: 28px;
+  }
+}
+
+@include breakpoint(small only) {
+  .agents-slider {
+    flex-direction: column;
+
+    &__title {
+      width: 100%;
+      transform: rotate(-90deg);
+      width: 220px !important;
+      height: 230px !important;
+      padding: 0;
+      margin-top: -145px;
+      margin-bottom: -50px;
+      margin-left: 10px;
+      justify-content: initial;
+    }
+    &__slide {
+      flex-direction: column;
+    }
+    &__card {
+      width: 100%;
+    }
   }
 }
 </style>

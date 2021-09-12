@@ -35,11 +35,6 @@ a:focus {
   background-color: inherit;
 }
 
-.top-bar,
-.top-bar ul {
-  background-color: #41b883;
-}
-
 li a.menu-button {
   border-radius: 20px;
   padding-left: 1.5rem;

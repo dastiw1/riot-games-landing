@@ -88,4 +88,12 @@ export default Vue.extend({
     }
   }
 }
+
+@include breakpoint(small only) {
+  .agent-card {
+    &__abilities {
+      max-width: 90%;
+    }
+  }
+}
 </style>
